@@ -8,10 +8,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "express": "^4.21.2",
     "qrcode": "^1.5.4",
     "whatsapp-web.js": "^1.26.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syofiansyi/publish_bot.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/syofiansyi/publish_bot/issues"
+  },
+  "homepage": "https://github.com/syofiansyi/publish_bot#readme",
+  "description": ""
 }

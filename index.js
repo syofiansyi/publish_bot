@@ -58,22 +58,18 @@ let qrCodeData = {};
             // Untuk Pengirim
         const cekPeopleid = new Set(['62895424010064@c.us']);
         const peopleIds = cekPeopleid.has(message.author);
-        const cekKunci = ['Halo dek'].some(keyword => message.body.toLowerCase().includes(keyword));
-        const pesan1 = ['apa yung'].some(keyword => message.body.toLowerCase().includes(keyword));
-        const pesan2 = ['yes i am'].some(keyword => message.body.toLowerCase().includes(keyword));
-        const slot = ['masih ada slot'].some(keyword => message.body.toLowerCase().includes(keyword));
-        const kataTamb = ['1 orang'].some(keyword => message.body.toLowerCase().includes(keyword));
-        // if (message.fromMe) return; // Ignore messages from the bot itself
-        // Detect keyword only once
-        if (clientId === "client2" && slot) { // Gunakan '===' untuk perbandingan
-            if (cekPeopleid && cekGroup) {
-                // Pastikan client2 adalah objek klien, bukan string
-                client2.sendMessage(message.from, "yang bener");
-                console.log("pesan terkirim dari",clientId);
-            }
-        }
+        const cekKunci = ['halo dek'].some(keyword => message.body.toLowerCase().includes(keyword));
+
+        
+        //untuk cek id grup
+        console.log("ini adalah id grup :",message.from);
+        //untuk cek nomor pengirim 
+        console.log("ini adalah nomor pengirim :",message.author);
+        //untuk cek pesan
+        console.log("ini adalah id grup :",message.body);
+
         //detect masuk ke grup
-        if (cekGroup && cekKunci && kataTamb && peopleIds && !keywordDetected && !isMessageSent)
+        if (cekKunci && !keywordDetected && !isMessageSent)
         {
             
             console.log(`keyword terdeteksi ${clientId}.`);
@@ -84,23 +80,10 @@ let qrCodeData = {};
         }
         
 
-        if (keywordDetected && !isMessageSent && cekGroup) {
+        if (keywordDetected && !isMessageSent ) {
             messageCounter++;
 
-            if (clientId === "client1" && pesan2){
-                isMessageSent = true;
-                keywordDetected = 0;
-                messageCounter = 0;
-                console.log("pesan sudah dibalas tanpa bot");
-            }
-            if (clientId === "client2" && pesan1){
-               
-                isMessageSent = true;
-                keywordDetected = 0;
-                messageCounter = 0;
-                console.log("pesan sudah dibalas tanpa bot");
-            }
-
+          
             // console.log(`New message received on ${clientId}: "${message.body}" (${messageCounter}/${randomMessageThreshold})`);
             if (messageCounter >= randomMessageThreshold && !isMessageSent) {
                 const detik = Math.floor(Math.random() * delay) + 1000; // Random delay between 1-10 seconds
@@ -133,12 +116,10 @@ let qrCodeData = {};
 }
 
 // Create two clients
-const client1 = createClient('client1', 11, 19, "apakah kami bisa bantu",1000);
-const client2 = createClient('client2', 3, 5, "terimakasih apa ada yang bisa dibantu",1000);
+const client1 = createClient('client1', 1, 2, "apakah kami bisa bantu",1000);
 
 // Initialize clients
 client1.initialize();
-client2.initialize();
 
 // Express server
 app.use(express.urlencoded({ extended: true })); // To parse URL-encoded form data
@@ -146,7 +127,6 @@ app.use(express.urlencoded({ extended: true })); // To parse URL-encoded form da
 app.get('/', (req, res) => {
     // Display both QR codes on the same page with Clear Session buttons
     const client1QRCode = qrCodeData.client1 ? `<img src="${qrCodeData.client1}" alt="QR Code for Client 1">` : 'QR code for Client 1 is not available yet.';
-    const client2QRCode = qrCodeData.client2 ? `<img src="${qrCodeData.client2}" alt="QR Code for Client 2">` : 'QR code for Client 2 is not available yet.';
     
     res.send(`
         <h1>WhatsApp Web QR Codes</h1>
@@ -156,12 +136,7 @@ app.get('/', (req, res) => {
             <input type="hidden" name="clientId" value="client1">
             <button type="submit">Clear Client 1 Session</button>
         </form>
-        <p><strong>Client 2 QR Code:</strong></p>
-        ${client2QRCode}
-        <form action="/clear-session" method="POST">
-            <input type="hidden" name="clientId" value="client2">
-            <button type="submit">Clear Client 2 Session</button>
-        </form>
+        
     `);
 });
 
